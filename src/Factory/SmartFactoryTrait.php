@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\GuctilityBelt\Concerns;
+namespace WebTheory\GuctilityBelt\Factory;
 
 use InvalidArgumentException;
 use ReflectionClass;
@@ -8,40 +8,6 @@ use WebTheory\GuctilityBelt\TxtCase;
 
 trait SmartFactoryTrait
 {
-    /**
-     * Get the value of namespace
-     *
-     * @return mixed
-     */
-    public function getNamespaces(): array
-    {
-        return $this->namespaces;
-    }
-
-    /**
-     * Set the value of namespace
-     *
-     * @param mixed $namespace
-     *
-     * @return self
-     */
-    public function addNamespace(string $namespace)
-    {
-        $this->namespaces[] = $namespace;
-
-        return $this;
-    }
-
-    /**
-     *
-     */
-    public function addNamespaces(array $namespaces)
-    {
-        $this->namespaces = $namespaces + $this->namespaces;
-
-        return $this;
-    }
-
     /**
      *
      */

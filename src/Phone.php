@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\GuctilityBelt\PhoneNumber;
+namespace WebTheory\GuctilityBelt;
 
 use libphonenumber\NumberFormat;
 use libphonenumber\PhoneNumberFormat;

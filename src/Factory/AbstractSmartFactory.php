@@ -1,12 +1,8 @@
 <?php
 
-namespace WebTheory\GuctilityBelt;
+namespace WebTheory\GuctilityBelt\Factory;
 
-use WebTheory\GuctilityBelt\Concerns\ClassResolverTrait;
-use WebTheory\GuctilityBelt\Concerns\SmartFactoryTrait;
-use WebTheory\GuctilityBelt\Contracts\SmartFactoryInterface;
-
-abstract class AbstractSmartFactory implements SmartFactoryInterface
+abstract class AbstractSmartFactory
 {
     use SmartFactoryTrait;
     use ClassResolverTrait;
