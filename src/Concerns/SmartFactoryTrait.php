@@ -2,10 +2,9 @@
 
 namespace WebTheory\GuctilityBelt\Concerns;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use ReflectionClass;
+use WebTheory\GuctilityBelt\TxtCase;
 
 trait SmartFactoryTrait
 {
@@ -46,13 +45,21 @@ trait SmartFactoryTrait
     /**
      *
      */
-    protected function build(string $class, Collection $args)
+    protected function build(string $class, array $args)
     {
-        $keys = $args->keys()->transform(function ($arg) {
-            return static::getParam($arg);
-        });
-
         $reflection = new ReflectionClass($class);
+        $instance = $this->constructInstance($reflection, $args);
+
+        return $this->defineInstance($reflection, $instance, $args);
+    }
+
+    /**
+     *
+     */
+    protected function constructInstance(ReflectionClass $reflection, array &$args)
+    {
+        $keys = $this->getKeysAsParameters($args);
+
         $constructor = $reflection->getConstructor();
         $params = $constructor->getParameters();
 
@@ -60,38 +67,53 @@ trait SmartFactoryTrait
 
         foreach ($params as $param) {
 
-            if ($keys->contains($param->name)) {
-
+            if (in_array($param->name, $keys)) {
                 $arg = static::getArg($param->name);
-
-                $construct[] = $args->get($arg);
-                $args->forget($arg);
+                $construct[] = $args[$arg];
+                unset($args[$arg]);
             } else {
                 $construct[] = null;
             }
         }
 
-        $object = $reflection->newInstance(...$construct);
-
-        foreach ($args as $property => $value) {
-            $setter = static::getSetter($property);
-
-            if ($reflection->hasMethod($setter)) {
-                $reflection->getMethod($setter)->invoke($object, $value);
-            } else {
-                throw new InvalidArgumentException("{$property} is not a settable property of {$reflection->name}");
-            }
-        }
-
-        return $object;
+        return $reflection->newInstance(...$construct);
     }
 
     /**
      *
      */
-    protected static function getSetter(string $property)
+    protected function defineInstance(ReflectionClass $reflection, object $instance, array &$args)
     {
-        return 'set' . Str::studly($property);
+        foreach ($args as $property => $value) {
+
+            if ($reflection->hasMethod($setter = static::getSetter($property))) {
+                $reflection->getMethod($setter)->invoke($instance, $value);
+            } elseif ($reflection->hasMethod($wither = static::getSetter($property, 'with'))) {
+                $reflection->getMethod($wither)->invoke($instance, $value);
+            } else {
+                throw new InvalidArgumentException("{$property} is not a settable property of {$reflection->name}");
+            }
+        }
+
+        return $instance;
+    }
+
+    /**
+     *
+     */
+    protected function getKeysAsParameters(array $args)
+    {
+        return array_map(function ($key) {
+            return static::getParam($key);
+        }, array_keys($args));
+    }
+
+    /**
+     *
+     */
+    protected static function getSetter(string $property, string $prefix = 'set')
+    {
+        return $prefix . TxtCase::studly($property);
     }
 
     /**
@@ -99,7 +121,7 @@ trait SmartFactoryTrait
      */
     protected static function getArg(string $param)
     {
-        return Str::snake($param);
+        return TxtCase::snake($param);
     }
 
     /**
@@ -107,7 +129,7 @@ trait SmartFactoryTrait
      */
     protected static function getParam(string $arg)
     {
-        return Str::camel($arg);
+        return TxtCase::camel($arg);
     }
 
     /**
@@ -125,4 +147,9 @@ trait SmartFactoryTrait
     {
         return (new static)->create(static::getArg($name), $args[0]);
     }
+
+    /**
+     *
+     */
+    abstract public function create($name, $args);
 }

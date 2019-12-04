@@ -2,7 +2,7 @@
 
 namespace WebTheory\GuctilityBelt\Concerns;
 
-use Illuminate\Support\Str;
+use WebTheory\GuctilityBelt\TxtCase;
 
 trait ClassResolverTrait
 {
@@ -11,7 +11,7 @@ trait ClassResolverTrait
      */
     protected function getClassName(string $class)
     {
-        $class = Str::studly($class);
+        $class = TxtCase::studly($class);
 
         if (null !== static::CONVENTION) {
             $class = sprintf(static::CONVENTION, $class);

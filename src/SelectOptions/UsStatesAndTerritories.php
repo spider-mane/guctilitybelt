@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @package Leonidas-Core
- */
-
 namespace WebTheory\GuctilityBelt\SelectOptions;
 
 class UsStatesAndTerritories

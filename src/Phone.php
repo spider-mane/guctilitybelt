@@ -3,15 +3,15 @@
 namespace WebTheory\GuctilityBelt\PhoneNumber;
 
 use libphonenumber\NumberFormat;
-use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 
-class PhoneNumber
+class Phone
 {
     /**
      *
      */
-    public function formatUsNumber(string $phoneNumber, string $format = '-')
+    public static function formatUS(string $phoneNumber, string $format = '-')
     {
         $pattern = "(\\d{3})(\\d{3})(\\d{4})";
 
@@ -39,7 +39,7 @@ class PhoneNumber
     /**
      *
      */
-    public function getPhoneLink($phoneNumber, $region = 'US')
+    public static function getPhoneLink($phoneNumber, $region = 'US')
     {
         $phoneUtil = PhoneNumberUtil::getInstance();
         $phoneNumber = $phoneUtil->parse($phoneNumber, $region);
