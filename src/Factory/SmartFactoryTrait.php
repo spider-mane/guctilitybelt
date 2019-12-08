@@ -111,7 +111,7 @@ trait SmartFactoryTrait
      */
     public static function __callStatic($name, $args)
     {
-        return (new static)->create(static::getArg($name), $args[0]);
+        return (new static())->create(static::getArg($name), $args[0]);
     }
 
     /**

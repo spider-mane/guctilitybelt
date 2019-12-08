@@ -23,7 +23,7 @@ class Phone
             '' => "\$1\$2\$3",
         ];
 
-        $newFormats[] = (new NumberFormat)
+        $newFormats[] = (new NumberFormat())
             ->setPattern($pattern)
             ->setFormat($formats[$format]);
 
