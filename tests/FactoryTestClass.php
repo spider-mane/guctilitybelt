@@ -2,6 +2,8 @@
 
 namespace WebTheory\GuctilityBelt\Tests;
 
+use DateTime;
+
 class FactoryTestClass
 {
     protected $value1;
@@ -26,7 +28,7 @@ class FactoryTestClass
         $this->value3 = $value3;
     }
 
-    public function setValue4($value4)
+    public function setValue4(DateTime ...$value4)
     {
         $this->value4 = $value4;
     }

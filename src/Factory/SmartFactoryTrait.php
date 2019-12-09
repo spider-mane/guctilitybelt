@@ -4,6 +4,8 @@ namespace WebTheory\GuctilityBelt\Factory;
 
 use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionMethod;
+use ReflectionParameter;
 use WebTheory\GuctilityBelt\TxtCase;
 
 trait SmartFactoryTrait
@@ -22,7 +24,7 @@ trait SmartFactoryTrait
     /**
      *
      */
-    protected function constructInstance(ReflectionClass $reflection, array &$args)
+    protected function constructInstance(ReflectionClass $reflection, array &$args): object
     {
         $keys = $this->getKeysAsParameters($args);
 
@@ -48,14 +50,15 @@ trait SmartFactoryTrait
     /**
      *
      */
-    protected function defineInstance(ReflectionClass $reflection, object $instance, array &$args)
+    protected function defineInstance(ReflectionClass $reflection, object $instance, array &$args): object
     {
         foreach ($args as $property => $value) {
 
             if ($reflection->hasMethod($setter = static::getSetter($property))) {
-                $reflection->getMethod($setter)->invoke($instance, $value);
+
+                $this->invokeMethod($reflection->getMethod($setter), $instance, $value);
             } elseif ($reflection->hasMethod($wither = static::getSetter($property, 'with'))) {
-                $reflection->getMethod($wither)->invoke($instance, $value);
+                $this->invokeMethod($reflection->getMethod($wither), $instance, $value);
             } else {
                 throw new InvalidArgumentException("{$property} is not a settable property of {$reflection->name}");
             }
@@ -67,7 +70,19 @@ trait SmartFactoryTrait
     /**
      *
      */
-    protected function getKeysAsParameters(array $args)
+    protected function invokeMethod(ReflectionMethod $method, object $instance, $value)
+    {
+        if ($method->isVariadic() && is_array($value)) {
+            $method->invoke($instance, ...$value);
+        } else {
+            $method->invoke($instance, $value);
+        }
+    }
+
+    /**
+     *
+     */
+    protected function getKeysAsParameters(array $args): array
     {
         return array_map(function ($key) {
             return static::getParam($key);

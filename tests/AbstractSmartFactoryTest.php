@@ -37,7 +37,7 @@ class AbstractSmartFactoryTest extends TestCase
             'value1' => 'foo',
             'value3' => 'bar',
             'value5' => 45616,
-            'value4' => ['foobar', 202023, new DateTime()],
+            'value4' => [new DateTime(), new DateTime(), new DateTime()],
             'value2' => new DateTime()
         ];
 

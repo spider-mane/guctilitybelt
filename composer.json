@@ -44,10 +44,10 @@
   },
 
   "scripts": {
-    "test": "vendor/bin/phpunit",
+    "test": "vendor/bin/phpunit --colors=always",
     "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
-    "check": "vendor/bin/phpcs src tests",
-    "fix": "vendor/bin/phpcbf src tests",
+    "check": "vendor/bin/phpcs --standard=phpcs.xml.dist src",
+    "fix": "vendor/bin/phpcbf --standard=phpcs.xml.dist src",
     "benchmark": "vendor/bin/phpbench"
   },
 
