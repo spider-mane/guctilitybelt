@@ -51,7 +51,7 @@ trait SmartFactoryTrait
     /**
      *
      */
-    public function getConstructorArgs(ReflectionClass $reflection, array &$args)
+    public function getConstructorArgs(ReflectionClass $reflection, array &$args): array
     {
         $construct = [];
         $keys = $this->getKeysAsParameters($args);
@@ -100,7 +100,7 @@ trait SmartFactoryTrait
     /**
      *
      */
-    protected static function getSetter(string $property, string $prefix = 'set')
+    protected static function getSetter(string $property, string $prefix = 'set'): string
     {
         return $prefix . TxtCase::studly($property);
     }
@@ -108,7 +108,7 @@ trait SmartFactoryTrait
     /**
      *
      */
-    protected static function getArg(string $param)
+    protected static function getArg(string $param): string
     {
         return TxtCase::snake($param);
     }
@@ -116,7 +116,7 @@ trait SmartFactoryTrait
     /**
      *
      */
-    protected static function getParam(string $arg)
+    protected static function getParam(string $arg): string
     {
         return TxtCase::camel($arg);
     }

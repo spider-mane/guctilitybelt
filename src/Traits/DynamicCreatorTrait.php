@@ -25,5 +25,5 @@ trait DynamicCreatorTrait
     /**
      *
      */
-    abstract public function create($name, $args);
+    abstract public function create(string $name, array $args): object;
 }
