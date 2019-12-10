@@ -29,19 +29,19 @@ class SmartFactoryTraitTest extends TestCase
         $factory = $this->generateTestInstance();
 
         $args = [
-            'value1' => 'foo',
-            'value3' => 'bar',
-            'value5' => 45616,
-            'value4' => [new DateTime(), new DateTime(), new DateTime()],
-            'value2' => new DateTime()
+            'value_one' => 'foo',
+            'value_three' => 'bar',
+            'value_five' => 45616,
+            'value_four' => [new DateTime(), new DateTime(), new DateTime()],
+            'value_two' => new DateTime()
         ];
 
         $instance = $factory->create($args);
 
-        $this->assertEquals($args['value1'], $instance->getValue1());
-        $this->assertEquals($args['value2'], $instance->getValue2());
-        $this->assertEquals($args['value3'], $instance->getValue3());
-        $this->assertEquals($args['value4'], $instance->getValue4());
-        $this->assertEquals($args['value5'], $instance->getValue5());
+        $this->assertEquals($args['value_one'], $instance->getValueOne());
+        $this->assertEquals($args['value_two'], $instance->getValueTwo());
+        $this->assertEquals($args['value_three'], $instance->getValueThree());
+        $this->assertEquals($args['value_four'], $instance->getValueFour());
+        $this->assertEquals($args['value_five'], $instance->getValueFive());
     }
 }

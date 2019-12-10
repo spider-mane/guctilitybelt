@@ -6,60 +6,60 @@ use DateTime;
 
 class FactoryTestClass
 {
-    protected $value1;
-    protected $value2;
-    protected $value3;
-    protected $value4;
-    protected $value5;
+    protected $valueOne;
+    protected $valueTwo;
+    protected $valueThree;
+    protected $valueFour;
+    protected $valueFive;
 
-    public function __construct($value1, $value2)
+    public function __construct($valueOne, $valueTwo)
     {
-        $this->value1 = $value1;
-        $this->setValue2($value2);
+        $this->valueOne = $valueOne;
+        $this->setValueTwo($valueTwo);
     }
 
-    public function setValue2($value2)
+    public function setValueTwo($valueTwo)
     {
-        $this->value2 = $value2;
+        $this->valueTwo = $valueTwo;
     }
 
-    public function setValue3($value3)
+    public function setValueThree($valueThree)
     {
-        $this->value3 = $value3;
+        $this->valueThree = $valueThree;
     }
 
-    public function setValue4(DateTime ...$value4)
+    public function setValueFour(DateTime ...$valueFour)
     {
-        $this->value4 = $value4;
+        $this->valueFour = $valueFour;
     }
 
-    public function withValue5($value5)
+    public function withValueFive($valueFive)
     {
-        $this->value5 = $value5;
+        $this->valueFive = $valueFive;
     }
 
-    public function getValue1()
+    public function getValueOne()
     {
-        return $this->value1;
+        return $this->valueOne;
     }
 
-    public function getValue2()
+    public function getValueTwo()
     {
-        return $this->value2;
+        return $this->valueTwo;
     }
 
-    public function getValue3()
+    public function getValueThree()
     {
-        return $this->value3;
+        return $this->valueThree;
     }
 
-    public function getValue4()
+    public function getValueFour()
     {
-        return $this->value4;
+        return $this->valueFour;
     }
 
-    public function getValue5()
+    public function getValueFive()
     {
-        return $this->value5;
+        return $this->valueFive;
     }
 }
