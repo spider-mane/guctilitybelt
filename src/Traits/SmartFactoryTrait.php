@@ -1,11 +1,10 @@
 <?php
 
-namespace WebTheory\GuctilityBelt\Factory;
+namespace WebTheory\GuctilityBelt\Traits;
 
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
-use ReflectionParameter;
 use WebTheory\GuctilityBelt\TxtCase;
 
 trait SmartFactoryTrait
@@ -26,25 +25,7 @@ trait SmartFactoryTrait
      */
     protected function constructInstance(ReflectionClass $reflection, array &$args): object
     {
-        $keys = $this->getKeysAsParameters($args);
-
-        $constructor = $reflection->getConstructor();
-        $params = $constructor->getParameters();
-
-        $construct = [];
-
-        foreach ($params as $param) {
-
-            if (in_array($param->name, $keys)) {
-                $arg = static::getArg($param->name);
-                $construct[] = $args[$arg];
-                unset($args[$arg]);
-            } else {
-                $construct[] = null;
-            }
-        }
-
-        return $reflection->newInstance(...$construct);
+        return $reflection->newInstance(...$this->getConstructorArgs($reflection, $args));
     }
 
     /**
@@ -70,9 +51,36 @@ trait SmartFactoryTrait
     /**
      *
      */
+    public function getConstructorArgs(ReflectionClass $reflection, array &$args)
+    {
+        $construct = [];
+        $keys = $this->getKeysAsParameters($args);
+        $constructor = $reflection->getConstructor();
+        $params = $constructor->getParameters();
+
+        foreach ($params as $param) {
+
+            if (in_array($param->name, $keys)) {
+                $arg = static::getArg($param->name);
+                $construct[] = $args[$arg];
+
+                unset($args[$arg]);
+            } else {
+                $construct[] = null;
+            }
+        }
+
+        return $construct;
+    }
+
+    /**
+     *
+     */
     protected function invokeMethod(ReflectionMethod $method, object $instance, $value)
     {
-        if ($method->isVariadic() && is_array($value)) {
+        $parameter = $method->getParameters()[0];
+
+        if ($parameter->isVariadic() && is_array($value)) {
             $method->invoke($instance, ...$value);
         } else {
             $method->invoke($instance, $value);

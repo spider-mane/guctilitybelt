@@ -1,24 +1,18 @@
 <?php
 
-namespace WebTheory\GuctilityBelt;
-
-use DateTime;
 use PHPUnit\Framework\TestCase;
-use WebTheory\GuctilityBelt\Factory\AbstractSmartFactory;
 use WebTheory\GuctilityBelt\Tests\FactoryTestClass;
+use WebTheory\GuctilityBelt\Traits\SmartFactoryTrait;
 
-class AbstractSmartFactoryTest extends TestCase
+class SmartFactoryTraitTest extends TestCase
 {
-    public function setup(): void
-    {
-        // include 'FactoryTestClass.php';
-    }
-
     public function generateTestInstance()
     {
-        return new class extends AbstractSmartFactory
+        return new class
         {
-            public function create($name, $args): FactoryTestClass
+            use SmartFactoryTrait;
+
+            public function create($args): FactoryTestClass
             {
                 $object = $this->build(FactoryTestClass::class, $args);
 
@@ -26,6 +20,7 @@ class AbstractSmartFactoryTest extends TestCase
             }
         };
     }
+
     /**
      * Test that true does in fact equal true
      */
@@ -41,7 +36,7 @@ class AbstractSmartFactoryTest extends TestCase
             'value2' => new DateTime()
         ];
 
-        $instance = $factory->create('test', $args);
+        $instance = $factory->create($args);
 
         $this->assertEquals($args['value1'], $instance->getValue1());
         $this->assertEquals($args['value2'], $instance->getValue2());

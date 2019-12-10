@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\GuctilityBelt\Factory;
+namespace WebTheory\GuctilityBelt\Traits;
 
 use WebTheory\GuctilityBelt\TxtCase;
 
