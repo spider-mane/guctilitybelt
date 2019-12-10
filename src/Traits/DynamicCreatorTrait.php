@@ -2,8 +2,6 @@
 
 namespace WebTheory\GuctilityBelt\Traits;
 
-use WebTheory\GuctilityBelt\Concerns\SmartFactoryTrait;
-
 trait DynamicCreatorTrait
 {
     use SmartFactoryTrait;
