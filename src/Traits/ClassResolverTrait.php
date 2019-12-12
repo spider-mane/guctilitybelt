@@ -2,7 +2,7 @@
 
 namespace WebTheory\GuctilityBelt\Traits;
 
-use WebTheory\GuctilityBelt\TxtCase;
+use WebTheory\GuctilityBelt\CaseSwap;
 
 trait ClassResolverTrait
 {
@@ -45,7 +45,7 @@ trait ClassResolverTrait
      */
     protected function getClassName(string $class)
     {
-        $class = TxtCase::studly($class);
+        $class = CaseSwap::studly($class);
 
         if (static::CONVENTION) {
             $class = sprintf(static::CONVENTION, $class);

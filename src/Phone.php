@@ -31,9 +31,11 @@ class Phone
 
         $phoneNumber = $phoneUtil->parse($phoneNumber, 'US');
 
-        $phoneNumber = $phoneUtil->formatByPattern($phoneNumber, PhoneNumberFormat::NATIONAL, $newFormats);
-
-        return $phoneNumber;
+        return $phoneUtil->formatByPattern(
+            $phoneNumber,
+            PhoneNumberFormat::NATIONAL,
+            $newFormats
+        );
     }
 
     /**
@@ -43,8 +45,7 @@ class Phone
     {
         $phoneUtil = PhoneNumberUtil::getInstance();
         $phoneNumber = $phoneUtil->parse($phoneNumber, $region);
-        $phoneNumber = $phoneUtil->format($phoneNumber, PhoneNumberFormat::RFC3966);
 
-        return $phoneNumber;
+        return $phoneUtil->format($phoneNumber, PhoneNumberFormat::RFC3966);
     }
 }

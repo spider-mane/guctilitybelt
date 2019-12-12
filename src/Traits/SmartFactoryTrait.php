@@ -5,7 +5,7 @@ namespace WebTheory\GuctilityBelt\Traits;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
-use WebTheory\GuctilityBelt\TxtCase;
+use WebTheory\GuctilityBelt\CaseSwap;
 
 trait SmartFactoryTrait
 {
@@ -34,15 +34,29 @@ trait SmartFactoryTrait
     protected function defineInstance(ReflectionClass $reflection, object $instance, array &$args): object
     {
         foreach ($args as $property => $value) {
+            $set = false;
 
-            if ($reflection->hasMethod($setter = static::getSetter($property))) {
+            foreach (['set', 'with'] as $prefix) {
+                $setter = $this->getSetter($property, $prefix);
 
-                $this->invokeMethod($reflection->getMethod($setter), $instance, $value);
-            } elseif ($reflection->hasMethod($wither = static::getSetter($property, 'with'))) {
-                $this->invokeMethod($reflection->getMethod($wither), $instance, $value);
-            } else {
+                if ($reflection->hasMethod($setter)) {
+                    $this->invokeMethod($setter, $instance, $value);
+                    $set = true;
+                    break;
+                }
+            }
+
+            if (!$set) {
                 throw new InvalidArgumentException("{$property} is not a settable property of {$reflection->name}");
             }
+
+            // if ($reflection->hasMethod($setter = $this->getSetter($property))) {
+            //     $this->invokeMethod($reflection->getMethod($setter), $instance, $value);
+            // } elseif ($reflection->hasMethod($wither = $this->getSetter($property, 'with'))) {
+            //     $this->invokeMethod($reflection->getMethod($wither), $instance, $value);
+            // } else {
+            //     throw new InvalidArgumentException("{$property} is not a settable property of {$reflection->name}");
+            // }
         }
 
         return $instance;
@@ -61,7 +75,7 @@ trait SmartFactoryTrait
         foreach ($params as $param) {
 
             if (in_array($param->name, $keys)) {
-                $arg = static::getArg($param->name);
+                $arg = $this->getArg($param->name);
                 $construct[] = $args[$arg];
 
                 unset($args[$arg]);
@@ -93,31 +107,31 @@ trait SmartFactoryTrait
     protected function getKeysAsParameters(array $args): array
     {
         return array_map(function ($key) {
-            return static::getParam($key);
+            return $this->getParam($key);
         }, array_keys($args));
     }
 
     /**
      *
      */
-    protected static function getSetter(string $property, string $prefix = 'set'): string
+    public function getSetter(string $property, string $prefix = 'set'): string
     {
-        return $prefix . TxtCase::studly($property);
+        return $prefix . CaseSwap::studly($property);
     }
 
     /**
      *
      */
-    protected static function getArg(string $param): string
+    public function getArg(string $param): string
     {
-        return TxtCase::snake($param);
+        return CaseSwap::snake($param);
     }
 
     /**
      *
      */
-    protected static function getParam(string $arg): string
+    public function getParam(string $arg): string
     {
-        return TxtCase::camel($arg);
+        return CaseSwap::camel($arg);
     }
 }

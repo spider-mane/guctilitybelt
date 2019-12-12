@@ -2,7 +2,7 @@
 
 namespace WebTheory\GuctilityBelt;
 
-class TxtCase
+class CaseSwap
 {
     /**
      * The cache of snake-cased words.
