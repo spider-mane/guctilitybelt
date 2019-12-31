@@ -34,7 +34,8 @@
   "autoload": {
     "psr-4": {
       "WebTheory\\GuctilityBelt\\": "src"
-    }
+    },
+    "files": ["src/helpers.php"]
   },
 
   "autoload-dev": {
