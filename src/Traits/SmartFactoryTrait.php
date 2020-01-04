@@ -33,14 +33,16 @@ trait SmartFactoryTrait
      */
     protected function defineInstance(ReflectionClass $reflection, object $instance, array &$args): object
     {
+        $prefixes = ['set', 'with'];
+
         foreach ($args as $property => $value) {
             $set = false;
 
-            foreach (['set', 'with'] as $prefix) {
+            foreach ($prefixes as $prefix) {
                 $setter = $this->getSetter($property, $prefix);
 
                 if ($reflection->hasMethod($setter)) {
-                    $this->invokeMethod($setter, $instance, $value);
+                    $this->invokeMethod($reflection->getMethod($setter), $instance, $value);
                     $set = true;
                     break;
                 }
@@ -49,14 +51,6 @@ trait SmartFactoryTrait
             if (!$set) {
                 throw new InvalidArgumentException("{$property} is not a settable property of {$reflection->name}");
             }
-
-            // if ($reflection->hasMethod($setter = $this->getSetter($property))) {
-            //     $this->invokeMethod($reflection->getMethod($setter), $instance, $value);
-            // } elseif ($reflection->hasMethod($wither = $this->getSetter($property, 'with'))) {
-            //     $this->invokeMethod($reflection->getMethod($wither), $instance, $value);
-            // } else {
-            //     throw new InvalidArgumentException("{$property} is not a settable property of {$reflection->name}");
-            // }
         }
 
         return $instance;
