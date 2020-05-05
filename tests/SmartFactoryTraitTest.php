@@ -4,14 +4,24 @@ use PHPUnit\Framework\TestCase;
 use WebTheory\GuctilityBelt\Tests\FactoryTestClass;
 use WebTheory\GuctilityBelt\Traits\SmartFactoryTrait;
 
+/**
+ * Class SmartFactoryTraitTest
+ */
 class SmartFactoryTraitTest extends TestCase
 {
+    /**
+     * @return __anonymous@347 @261
+     */
     public function generateTestInstance()
     {
         return new class
         {
             use SmartFactoryTrait;
 
+            /**
+             * @param $args
+             * @return FactoryTestClass
+             */
             public function create($args): FactoryTestClass
             {
                 $object = $this->build(FactoryTestClass::class, $args);

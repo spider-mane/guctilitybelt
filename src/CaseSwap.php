@@ -2,6 +2,10 @@
 
 namespace WebTheory\GuctilityBelt;
 
+/**
+ * Class CaseSwap
+ * @package WebTheory\GuctilityBelt
+ */
 class CaseSwap
 {
     /**

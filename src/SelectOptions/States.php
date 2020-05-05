@@ -2,8 +2,15 @@
 
 namespace WebTheory\GuctilityBelt\SelectOptions;
 
+/**
+ * Class States
+ * @package WebTheory\GuctilityBelt\SelectOptions
+ */
 class States
 {
+    /**
+     *
+     */
     public const STATES = [
         'AL' => 'Alabama',
         'AK' => 'Alaska',
@@ -80,7 +87,10 @@ class States
     ];
 
     /**
-     *
+     * @param string|null $placeholder
+     * @param array $additions
+     * @param bool $sort
+     * @return array|mixed
      */
     public static function states(?string $placeholder = null, array $additions = [], bool $sort = false)
     {

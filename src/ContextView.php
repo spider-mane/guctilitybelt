@@ -2,6 +2,10 @@
 
 namespace WebTheory\GuctilityBelt;
 
+/**
+ * Class ContextView
+ * @package WebTheory\GuctilityBelt
+ */
 class ContextView
 {
     /**
@@ -15,7 +19,8 @@ class ContextView
     protected $contexts;
 
     /**
-     *
+     * @param array $items
+     * @param array $contexts
      */
     public function __construct(array $items, array $contexts)
     {
@@ -24,7 +29,8 @@ class ContextView
     }
 
     /**
-     *
+     * @param string $context
+     * @return mixed
      */
     public function getContext(string $context)
     {
@@ -40,7 +46,8 @@ class ContextView
     }
 
     /**
-     *
+     * @param string $item
+     * @return mixed
      */
     public function getItem(string $item)
     {
@@ -48,7 +55,8 @@ class ContextView
     }
 
     /**
-     *
+     * @param string[] $items
+     * @return array
      */
     public function getItems(string ...$items)
     {
@@ -64,7 +72,8 @@ class ContextView
     }
 
     /**
-     *
+     * @param string $context
+     * @return array
      */
     public function getContextItems(string $context)
     {

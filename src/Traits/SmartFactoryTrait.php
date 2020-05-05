@@ -7,10 +7,17 @@ use ReflectionClass;
 use ReflectionMethod;
 use WebTheory\GuctilityBelt\CaseSwap;
 
+/**
+ * Trait SmartFactoryTrait
+ * @package WebTheory\GuctilityBelt\Traits
+ */
 trait SmartFactoryTrait
 {
     /**
-     *
+     * @param string $class
+     * @param array $args
+     * @return object
+     * @throws \ReflectionException
      */
     protected function build(string $class, array $args)
     {
@@ -21,7 +28,9 @@ trait SmartFactoryTrait
     }
 
     /**
-     *
+     * @param ReflectionClass $reflection
+     * @param array $args
+     * @return object
      */
     protected function constructInstance(ReflectionClass $reflection, array &$args): object
     {
@@ -29,7 +38,11 @@ trait SmartFactoryTrait
     }
 
     /**
-     *
+     * @param ReflectionClass $reflection
+     * @param object $instance
+     * @param array $args
+     * @return object
+     * @throws \ReflectionException
      */
     protected function defineInstance(ReflectionClass $reflection, object $instance, array &$args): object
     {
@@ -57,7 +70,9 @@ trait SmartFactoryTrait
     }
 
     /**
-     *
+     * @param ReflectionClass $reflection
+     * @param array $args
+     * @return array
      */
     public function getConstructorArgs(ReflectionClass $reflection, array &$args): array
     {
@@ -82,7 +97,9 @@ trait SmartFactoryTrait
     }
 
     /**
-     *
+     * @param ReflectionMethod $method
+     * @param object $instance
+     * @param $value
      */
     protected function invokeMethod(ReflectionMethod $method, object $instance, $value)
     {
@@ -96,7 +113,8 @@ trait SmartFactoryTrait
     }
 
     /**
-     *
+     * @param array $args
+     * @return array
      */
     protected function getKeysAsParameters(array $args): array
     {
@@ -106,7 +124,9 @@ trait SmartFactoryTrait
     }
 
     /**
-     *
+     * @param string $property
+     * @param string $prefix
+     * @return string
      */
     public function getSetter(string $property, string $prefix = 'set'): string
     {
@@ -114,7 +134,8 @@ trait SmartFactoryTrait
     }
 
     /**
-     *
+     * @param string $param
+     * @return string
      */
     public function getArg(string $param): string
     {
@@ -122,7 +143,8 @@ trait SmartFactoryTrait
     }
 
     /**
-     *
+     * @param string $arg
+     * @return string
      */
     public function getParam(string $arg): string
     {

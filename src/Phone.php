@@ -6,10 +6,17 @@ use libphonenumber\NumberFormat;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 
+/**
+ * Class Phone
+ * @package WebTheory\GuctilityBelt
+ */
 class Phone
 {
     /**
-     *
+     * @param string $phoneNumber
+     * @param string $format
+     * @return String
+     * @throws \libphonenumber\NumberParseException
      */
     public static function formatUS(string $phoneNumber, string $format = '-')
     {
@@ -39,7 +46,10 @@ class Phone
     }
 
     /**
-     *
+     * @param $phoneNumber
+     * @param string $region
+     * @return string
+     * @throws \libphonenumber\NumberParseException
      */
     public static function getPhoneLink($phoneNumber, $region = 'US')
     {

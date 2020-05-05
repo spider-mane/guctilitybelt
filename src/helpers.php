@@ -3,7 +3,10 @@
 namespace WebTheory\GuctilityBelt;
 
 /**
- *
+ * @param array $objects_array
+ * @param array $order_array
+ * @param string $order_key
+ * @return array
  */
 function sort_objects_array(array $objects_array, array $order_array, string $order_key)
 {

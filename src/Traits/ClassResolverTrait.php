@@ -4,6 +4,10 @@ namespace WebTheory\GuctilityBelt\Traits;
 
 use WebTheory\GuctilityBelt\CaseSwap;
 
+/**
+ * Trait ClassResolverTrait
+ * @package WebTheory\GuctilityBelt\Traits
+ */
 trait ClassResolverTrait
 {
     /**
@@ -31,7 +35,8 @@ trait ClassResolverTrait
     }
 
     /**
-     *
+     * @param array $namespaces
+     * @return ClassResolverTrait
      */
     public function addNamespaces(array $namespaces)
     {
@@ -41,7 +46,8 @@ trait ClassResolverTrait
     }
 
     /**
-     *
+     * @param string $class
+     * @return string
      */
     protected function getClassName(string $class)
     {
@@ -55,7 +61,9 @@ trait ClassResolverTrait
     }
 
     /**
-     *
+     * @param string $namespace
+     * @param string $class
+     * @return string
      */
     protected function getFqn(string $namespace, string $class)
     {
@@ -63,7 +71,8 @@ trait ClassResolverTrait
     }
 
     /**
-     *
+     * @param string $arg
+     * @return bool|string
      */
     protected function getClass(string $arg)
     {
