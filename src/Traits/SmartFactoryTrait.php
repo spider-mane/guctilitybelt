@@ -4,8 +4,10 @@ namespace WebTheory\GuctilityBelt\Traits;
 
 use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 use WebTheory\GuctilityBelt\CaseSwap;
+use WebTheory\GuctilityBelt\Interfaces\FactoryRepository;
 
 /**
  * Trait SmartFactoryTrait
@@ -13,6 +15,27 @@ use WebTheory\GuctilityBelt\CaseSwap;
  */
 trait SmartFactoryTrait
 {
+    /**
+     *
+     */
+    protected $repository;
+
+    /**
+     *
+     */
+    public function __construct(FactoryRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
+     *
+     */
+    protected function getFactory(string $interface)
+    {
+        return $this->repository->getFactoryFor($this->getClassName());
+    }
+
     /**
      * @param string $class
      * @param array $args
@@ -89,7 +112,11 @@ trait SmartFactoryTrait
 
                 unset($args[$arg]);
             } else {
-                $construct[] = null;
+                try {
+                    $construct[] = $param->getDefaultValue();
+                } catch (ReflectionException $message) {
+                    throw new InvalidArgumentException($message);
+                }
             }
         }
 
@@ -104,12 +131,29 @@ trait SmartFactoryTrait
     protected function invokeMethod(ReflectionMethod $method, object $instance, $value)
     {
         $parameter = $method->getParameters()[0];
+        $type = $parameter->getType();
+
+        if (interface_exists($type)) {
+            $value = $this->resolveArg($type, $value);
+        }
 
         if ($parameter->isVariadic() && is_array($value)) {
             $method->invoke($instance, ...$value);
         } else {
             $method->invoke($instance, $value);
         }
+    }
+
+    /**
+     *
+     */
+    protected function resolveArg(string $type, $value)
+    {
+        $factory = $this->repository->getFactoryFor($type);
+
+        $thing = $value['@create'];
+
+        $factory->create($thing, $value);
     }
 
     /**
