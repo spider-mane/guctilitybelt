@@ -1,33 +1,33 @@
 <?php
 
+namespace WebTheory\GuctilityBelt\ObjectProxy;
 
-namespace WebTheory\GuctilityBelt\Traits;
-
+use Exception;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
-trait ObjectProxyBaseTrait
+trait FacadeBaseTrait
 {
     /**
      * @var ContainerInterface
      */
-    protected static $container;
+    protected static ContainerInterface $container;
 
     /**
      * The resolved object instances.
      *
      * @var array
      */
-    protected static $resolvedInstances;
+    protected static array $resolvedInstances;
 
     /**
      * Get the root object behind the facade.
      *
      * @return mixed
      */
-    public static function _getObjectRoot()
+    public static function _getFacadeRoot()
     {
-        return static::_resolveInstance(static::_getServiceToProxy());
+        return static::_resolveFacadeInstance(static::_getFacadeAccessor());
     }
 
     /**
@@ -37,7 +37,7 @@ trait ObjectProxyBaseTrait
      *
      * @throws RuntimeException
      */
-    protected static function _getServiceToProxy()
+    protected static function _getFacadeAccessor()
     {
         throw new RuntimeException(__CLASS__ . ' does not implement ' . __METHOD__ . ' method.');
     }
@@ -48,7 +48,7 @@ trait ObjectProxyBaseTrait
      * @param object|string $name
      * @return mixed
      */
-    protected static function _resolveInstance($name)
+    protected static function _resolveFacadeInstance($name)
     {
         if (is_object($name)) {
             return $name;
@@ -64,32 +64,11 @@ trait ObjectProxyBaseTrait
     }
 
     /**
-     * Clear a resolved facade instance.
-     *
-     * @param string $name
-     * @return void
-     */
-    public static function _clearResolvedInstance($name)
-    {
-        unset(static::$resolvedInstances[$name]);
-    }
-
-    /**
-     * Clear all of the resolved instances.
-     *
-     * @return void
-     */
-    public static function _clearResolvedInstances()
-    {
-        static::$resolvedInstances = [];
-    }
-
-    /**
      * Get the application instance behind the facade.
      *
      * @return ContainerInterface
      */
-    public static function _getProxyContainer()
+    public static function _getFacadeContainer(): ContainerInterface
     {
         return static::$container;
     }
@@ -99,10 +78,16 @@ trait ObjectProxyBaseTrait
      *
      * @param ContainerInterface $container
      * @return void
+     *
+     * @throws RuntimeException
      */
-    public static function _setProxyContainer(ContainerInterface $container)
+    public static function _setFacadeContainer(ContainerInterface $container)
     {
-        static::$container = $container;
+        if (!isset(static::$container)) {
+            static::$container = $container;
+        } else {
+            throw new RuntimeException('Container for ' . __CLASS__ . ' has already been set');
+        }
     }
 
     /**
@@ -116,12 +101,22 @@ trait ObjectProxyBaseTrait
      */
     public static function __callStatic($method, $args)
     {
-        $instance = static::_getObjectRoot();
+        $instance = static::_getFacadeRoot();
 
         if (!$instance) {
-            throw new RuntimeException('An object has not been defined.');
+            throw new RuntimeException('An instance has not been set for ' . __CLASS__);
         }
 
-        return $instance->$method(...$args);
+        try {
+            return $instance->$method(...$args);
+        } catch (Exception $methodException) {
+            $method = "_$method";
+
+            if (method_exists(static::class, $method)) {
+                return ([static::class, $method])(...$args);
+            }
+        } finally {
+            throw $methodException;
+        }
     }
 }

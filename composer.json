@@ -27,6 +27,7 @@
   "require-dev": {
     "filp/whoops": "^2.5",
     "friendsofphp/php-cs-fixer": "^2.15",
+    "mockery/mockery": "^1.4",
     "phpbench/phpbench": "@dev",
     "phpunit/phpunit": "^8.2",
     "squizlabs/php_codesniffer": "^3.0",
