@@ -30,14 +30,15 @@ abstract class Factory implements ObjectFactory
      */
     protected function getFactory(string $interface)
     {
-        return $this->repository->getFactoryFor($this->getClassName());
+        return $this->repository->getFactoryFor($this->getClassName($interface));
     }
 
     /**
      *
      */
     protected function resolveArg()
-    { //
+    {
+        //
     }
 
     /**

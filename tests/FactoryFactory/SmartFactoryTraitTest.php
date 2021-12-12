@@ -9,9 +9,6 @@ use WebTheory\GuctilityBelt\Traits\SmartFactoryTrait;
  */
 class SmartFactoryTraitTest extends TestCase
 {
-    /**
-     * @return __anonymous@347 @261
-     */
     public function generateTestInstance()
     {
         return new class
