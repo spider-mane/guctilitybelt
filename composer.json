@@ -1,6 +1,6 @@
 {
   "name": "webtheory/guctilitybelt",
-  "description": "Suite of helpful WebTheory packages",
+  "description": "Suite of helpful micro libraries from WebTheory",
   "homepage": "https://github.com/spider-mane/guctilitybelt",
   "type": "metapackage",
   "license": "MIT",
